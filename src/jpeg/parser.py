@@ -1,5 +1,5 @@
 from typing import Final
-from jpeg.markers import APP_0_Marker
+from jpeg.markers import SOI_marker, APP_0_Marker
 
 # Markers
 # fmt: off
@@ -14,14 +14,21 @@ EOI:   Final[bytes] = bytes([0xFF, 0xD9]) # stands alone
 # fmt: on
 
 def has_SOI(byte_arr: bytes) -> bool:
-    return byte_arr[0:2] == SOI
+    return byte_arr[0:2] == SOI_marker.code
 
-def parse_APP_0(byte_arr: bytes) -> int:
+def parse_APP_0(byte_arr: bytes) -> APP_0_Marker:
     for i in range(len(byte_arr) - 1):
-        if byte_arr[i] == 0xff:
-            if byte_arr[i+1] == 0xe0:
-                return i
-    return -1
+        if byte_arr[i:i+2] == APP_0_Marker.code:
+            return APP_0_Marker(
+                [],
+                length = int.from_bytes(byte_arr[i+2:i+4]),
+                jfif_version_major = byte_arr[i+7],
+                jfif_version_minor = byte_arr[i+8],
+                pixel_unit_density = byte_arr[i+9],
+                x_density = int.from_bytes(byte_arr[i+10:i+12]),
+                y_density = int.from_bytes(byte_arr[i+12:i+14]),
+            )
+    return App_0_Marker()
 
 
 
