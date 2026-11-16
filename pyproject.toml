@@ -1,0 +1,30 @@
+[project]
+name = "jpeg"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Gabriel Romanini de Barros", email = "gabriel.romanini.barros@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.5.4",
+]
+
+[project.scripts]
+jpeg = "jpeg:main"
+
+[build-system]
+requires = ["uv_build>=0.8.11,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[dependency-groups]
+dev = [
+    "pillow>=13.0.0",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]
