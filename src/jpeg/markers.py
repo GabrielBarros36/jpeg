@@ -13,9 +13,11 @@ SOS:   Final[bytes] = bytes([0xFF, 0xDA])
 EOI:   Final[bytes] = bytes([0xFF, 0xD9]) # stands alone
 # fmt: on
 
+
 @dataclass
 class SOI_marker:
     code: bytes = SOI
+
 
 @dataclass
 class APP_0_Marker:
