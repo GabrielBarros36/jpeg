@@ -1,5 +1,4 @@
-from typing import Final
-from jpeg.markers import SOI_marker, APP_0_Marker
+from jpeg.markers import APP_0_Marker, SOI_marker
 
 
 def has_SOI(byte_arr: bytes) -> bool:
@@ -10,13 +9,15 @@ def parse_APP_0(byte_arr: bytes) -> APP_0_Marker:
     for i in range(len(byte_arr) - 1):
         if byte_arr[i : i + 2] == APP_0_Marker.code:
             return APP_0_Marker(
-                [],
+                thumbnail_RGB = byte_arr[i + 17 : i + (3 * byte_arr[i + 16] * byte_arr[i + 17])],
                 length=int.from_bytes(byte_arr[i + 2 : i + 4]),
-                jfif_version_major=byte_arr[i + 7],
-                jfif_version_minor=byte_arr[i + 8],
-                pixel_unit_density=byte_arr[i + 9],
-                x_density=int.from_bytes(byte_arr[i + 10 : i + 12]),
-                y_density=int.from_bytes(byte_arr[i + 12 : i + 14]),
+                jfif_version_major=byte_arr[i + 9],
+                jfif_version_minor=byte_arr[i +10],
+                pixel_unit_density=byte_arr[i + 11],
+                x_density=int.from_bytes(byte_arr[i + 12 : i + 14]),
+                y_density=int.from_bytes(byte_arr[i + 14 : i + 16]),
+                x_thumbnail = byte_arr[i + 16],
+                y_thumbnail = byte_arr[i + 17],
             )
     return App_0_Marker()
 
